@@ -1,0 +1,33 @@
+movie_metadata <- read_csv(“movie_metadata.csv”)
+
+View(movie_metadata)
+
+movie <- data.matrix(movie_metadata)
+
+movie <- na.omit(movie)
+
+smple <- movie[sample(nrow(movie),500),]
+
+smple_short <- smple[,c(9,23)]
+
+smple_matrix <- data.matrix(smple_short)
+
+View(smple_matrix)
+
+wss <- (nrow(smple_matrix)-1)*sum(apply(smple_matrix,2,var))
+
+for (i in 2:15) wss[i]<-sum(kmeans(smple_matrix,centers=i)$withinss)
+
+plot(1:15, wss, type=”b”, xlab=”Number of Clusters”, ylab=”Within Sum of Squares”)
+
+cl <- kmeans(smple_matrix,3,nstart=25)
+
+plot(smple_matrix, col =(cl$cluster +1) , main=”k-means result with 2 clusters”, pch=1, cex=1, las=1)
+
+points(cl$centers, col = “black”, pch = 17, cex = 2)
+
+Within cluster sum of squares by cluster:
+
+[1] 3.113949e+17 2.044851e+17 2.966394e+17
+
+(between_SS / total_SS =  72.4 %)
