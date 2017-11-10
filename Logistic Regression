@@ -1,0 +1,30 @@
+#load the dataset from the working directory
+diabetes = read.csv("diabetes.csv",head=TRUE,sep=","
+
+#package allows us to split our data into testing and training sets
+install.packages("caTools")
+library(caTools)
+
+split = sample.split(diabetes,SplitRatio=0.8)
+
+#create our testing and training set on an 20/80 ratio
+training = subset(diabetes,split == "TRUE")
+testing = subset(diabetes,split == "FALSE")
+
+#fit the model
+model = glm(Outcome~.,training,family="binomial")
+#statistical summary of the model. Look for significance using p values. Reject or accept the null hypothesis. 
+summary(model)
+
+#optimize the model by removing insignificant independent variables
+model = gml(type~.-age,training,family="binomial")
+result = predict(model,testing,type="response")
+
+#create a confusion matrix to identify sensitivity 
+table(ActualValue = testing$Outcome,PredictedValue = result>0.5)
+
+#determine optimal threshold by examining ROC curve. Maximize sensitivity
+library(ROCR)
+ROCRPred = predictions(result,training$Outcome)
+ROCRPref = performance(ROCR, "tpr","fpr")
+plot(ROCRPref,colorize=True,print.cutoffs.at=seq(0.1,by0.1))
