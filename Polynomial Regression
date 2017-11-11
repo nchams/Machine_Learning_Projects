@@ -1,0 +1,31 @@
+dataname = read.csv("filename.csv")
+attach(dataname)
+model = lm(dependent~independent)
+summary(model)
+
+#plot the least squares regression line
+abline(model,lwd=3,col="Red")
+
+model_2 = lm(dependent~independent + I(indep^2))
+
+summary(model_2)
+
+#another way to create the same model as above
+indepdquared = indep^2
+model_2 = lm(dep~indep+indepsquared)
+summary(model_2)
+
+#another way to create the same model as above
+model_2 = lm(dep~poly(indep,degree=2,raw=T))
+summary(model_2)
+
+lines(smooth.spline(dep,predict(model_2)),col="Blue",lwd=3)
+
+#hypothesis testing for both models
+anova(model,model_2)
+
+#another model
+model_3 = lm(dep~indep+I(indep^2) + I(indep^3))
+summary(model_3)
+
+anova(model_2,model_3)
