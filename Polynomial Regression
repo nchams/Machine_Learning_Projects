@@ -21,7 +21,7 @@ summary(model_2)
 
 lines(smooth.spline(dep,predict(model_2)),col="Blue",lwd=3)
 
-#hypothesis testing for both models
+#partial F-test. Compare p-values. Hypothesis testing for both models
 anova(model,model_2)
 
 #another model
