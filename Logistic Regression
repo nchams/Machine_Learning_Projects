@@ -17,8 +17,8 @@ model = glm(Outcome~.,training,family="binomial")
 summary(model)
 
 #optimize the model by removing insignificant independent variables
-model = gml(type~.-age,training,family="binomial")
-result = predict(model,testing,type="response")
+model = gml(Outcome~.-age,training,family="binomial")
+result = predict(model,testing,Outcome="response")
 
 #create a confusion matrix to identify sensitivity 
 table(ActualValue = testing$Outcome,PredictedValue = result>0.5)
